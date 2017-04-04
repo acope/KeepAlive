@@ -20,13 +20,14 @@ while(-not $notepad.HasExited -and ($timer -ge 0)){
 }
 
 #User input is required to close console
+$date = Get-Date -Format g
 if($notepad.HasExited){
     Stop-Process $notepad
-    Write-Host "Process has been terminated early"
+    Write-Host "Script has been terminated early. Script terminated on  " $date
     Read-Host "Press ENTER key to exit..."
     exit
 }else{
-    Write-Host "Timer has expired"
+    Write-Host "Timer has expired on " $date
     Read-Host "Press ENTER key to exit..."
     exit
 }
