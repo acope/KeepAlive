@@ -3,9 +3,9 @@
 
 
 
-###########
-#Functions
-###########
+#############
+# Functions #
+#############
 
 # User inputs amount of minutes they want to go for
 # validates user input 0-9
@@ -44,23 +44,30 @@ function exitProg
 }
 
 #Writes "." to notepad until notepad has closed
-function writeToNotepad{
+function writeToNotepad
+{
+    $count = 0
     #Continue pressing the keypad while Notepad is still open or the timer has not run out.
     while(-not $notepad.HasExited -and ($timer -ge 0)){
             Start-Sleep -Seconds 1 
-            Write-Host Seconds Remaining: $timer
+            #Convert from seconds to HH:MM:SS
+            $ts =  [timespan]::fromseconds($timer)
+            Write-Host Time Remaining: $ts
+            #Counters
             $timer--
-            #Before keypress check to make sure Notepad has not been closed
-            if(-not $notepad.HasExited){           
+            $count++
+            #Before keypress check to make sure Notepad has not been closed and press key every specified number of seconds. Not to spam 
+            if((-not $notepad.HasExited) -and ($count -eq 30)){           
                 $myshell.sendkeys(".")
+                $count = 0
             }
     }
 }
 
 
-###########
-#Code
-###########
+############
+#   Main   #
+############
 
 $timer = userInput #Set time to user input
 # Keep computer awake until notepad is terminated, the ask if user wants to continue
